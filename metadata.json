@@ -1,0 +1,6 @@
+{
+  "name": "Painel de Controle CCIH",
+  "description": "Painel de Controle de Infecção Hospitalar e Inteligência Antimicrobiana para monitoramento em tempo real de infecções e resistência antimicrobiana.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
