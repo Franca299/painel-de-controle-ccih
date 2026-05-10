@@ -17,9 +17,38 @@ import SensitivityHeatmap2D, { HeatmapRecord } from '../components/SensitivityHe
 
 const parseDateBR = (s: string): Date | null => {
   if (!s) return null;
-  const parts = s.includes('/') ? s.split('/').reverse() : s.split('-');
-  const d = new Date(parts.join('-'));
-  return isNaN(d.getTime()) ? null : d;
+  const datePart = s.split(' ')[0] || s.split('T')[0];
+  if (!datePart) return null;
+
+  let year, month, day;
+  if (datePart.includes('/')) {
+    const parts = datePart.split('/');
+    if (parts.length === 3) {
+      day = parseInt(parts[0], 10);
+      month = parseInt(parts[1], 10) - 1;
+      year = parseInt(parts[2], 10);
+      if (year < 100) year += 2000;
+    }
+  } else if (datePart.includes('-')) {
+    const parts = datePart.split('-');
+    if (parts.length === 3) {
+      if (parts[0].length === 4) {
+        year = parseInt(parts[0], 10);
+        month = parseInt(parts[1], 10) - 1;
+        day = parseInt(parts[2], 10);
+      } else {
+        day = parseInt(parts[0], 10);
+        month = parseInt(parts[1], 10) - 1;
+        year = parseInt(parts[2], 10);
+      }
+    }
+  }
+
+  if (year !== undefined && month !== undefined && day !== undefined) {
+    const d = new Date(year, month, day);
+    if (!isNaN(d.getTime())) return d;
+  }
+  return null;
 };
 
 const PctBar = ({ s, i, r }: { s: number; i: number; r: number }) => (
